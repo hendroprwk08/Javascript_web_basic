@@ -29,18 +29,22 @@
             //ajax
             $.ajax({
                dataType: "json",
-               url: "https://www.themealdb.com/api/json/v1/1/random.php", 
+               url: "https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood", 
                beforeSend: function(){ //proses sebelum ajax berjalan
                   $("#load").show();
                },
                success: function(data){ //berhasil
                   console.log(data);
-                  var meal = data.meals;
-                  
+                  var meals = data.meals;
+
+                  //looping 
+                  var isiTable;
+                  $.each(meals, function(index) {
+                      //masukkan kedalam table
+                     isiTable += "<tr><td>Nama</td><td>"+ meals[index].strMeal +"</td></tr><tr><td>Gambar</td><td><img src='"+ meals[index].strMealThumb +"' loading='lazy' height='200px'></td></tr>";
+                  });
+                 
                   //masukkan kedalam table
-                  var isiTable = "<tr><td>Nama</td><td>"+ meal[0].strMeal +"</td></tr>";
-                     isiTable += "<tr><td>Gambar</td><td><img src='"+ meal[0].strMealThumb +"' loading='lazy' height='200px'></td></tr>";
-                     
                   $("table").append(isiTable);
 
                   $("#load").hide();
