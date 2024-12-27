@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <title>Cookie</title>
+</head>
+
+<body>
+    <input type="text" id="my_text">
+    <button id="btn_simpan">Simpan</button>
+    <button id="btn_hapus">Hapus</button>
+    <p id="p_hasil">Hasil...</p>
+
+    <script>
+        let my_text = document.getElementById('my_text');
+        let p_hasil = document.getElementById('p_hasil');
+
+        let areCookiesEnabled = () => {
+            try {
+                document.cookie = 'cookietest=1';
+                var cookiesEnabled = document.cookie.indexOf('cookietest=') !== -1;
+                document.cookie = 'cookietest=1; expires=Thu, 01-Jan-1970 00:00:01 GMT';
+                return cookiesEnabled;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        if (!areCookiesEnabled()) {
+            alert('Perhatian: Fitur Cookie belum diaktifkan');
+        }
+
+        // simpan
+        document.getElementById('btn_simpan').onclick = () => {
+            const d = new Date();
+            d.setDate(d.getDate() + 7); // seminggu
+
+            document.cookie = "my_cookie=" + my_text.value + "; expires=" + d + "; path=/mycookie";
+
+            /*
+            let seminggu = 86400 * 7;
+            document.cookie = 'my_cookie=' + my_text.value
+                + '; max-age=' + seminggu + '; path=/;';
+
+                console.log('dinis');
+            console.log(getCookie('my_cookie'));
+            my_text.value = '';
+            */
+        }
+
+        // hapus
+        document.getElementById('btn_hapus').onclick = () => {
+            let seminggu = 86400 * 7;
+
+            document.cookie = 'my_cookie=' + my_text.value
+                + '; lang=id; max-age=' + seminggu + '; path=/;';
+
+            p_hasil.innerText = 'Hasil...';
+            my_text.value = '';
+        }
+
+        let getCookie = (cookieName) => {
+            let name = cookieName + "=";
+            let ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+    </script>
+</body>
+
+</html>

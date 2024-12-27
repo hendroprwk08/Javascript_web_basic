@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <title>Ajax</title>
+</head>
+
+<body>
+    <button id="btn_get">Ambil data</button>
+    <p id="hasil"></p>
+    <script>
+        let hasil = document.getElementById('hasil');
+
+        document.getElementById('btn_get').onclick = () => {
+            hasil.innerText = 'Menghubungi...';
+            getData();
+        }
+
+        let getData = () => {
+            // Membuat objek XMLHttpRequest
+            let xhr = new XMLHttpRequest();
+
+            // Fungsi yang akan dijalankan ketika respons diterima
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    // respon diterima
+                    // JSON diubah ke array
+                    var myArray = JSON.parse(this.responseText);
+
+                    let html = '<ol>';
+                    for (i = 0; i < myArray.length; i++) {
+                        html += '<li>'+ myArray[i].name +'</li>';
+                    }
+                    html += '</ol>';
+                    
+                    // masukkan kedalam hasil
+                    hasil.innerHTML = html;
+                } else {
+                    console.error('Terjadi kesalahan:', this.statusText);
+                }
+            };
+
+            // Mengirim permintaan GET ke server
+            let url = 'https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json';
+            xhr.open('GET', url);
+            xhr.send();
+        }
+
+    </script>
+</body>
+
+</html>
